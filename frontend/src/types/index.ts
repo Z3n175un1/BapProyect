@@ -1,9 +1,14 @@
+import type { UserRole } from './dashboard'
+
 export interface User {
   id: number
   name: string
   email: string
   password: string
-  role: 'admin' | 'usuario'
+  role: UserRole
+  position: string
+  department: string
+  memberSince: string
 }
 
 export interface AuthState {

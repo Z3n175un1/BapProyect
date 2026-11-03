@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import HomePageBAP from './pages/HomePageBAP'
+import App from './App'
 import './styles/style.css'
 
 const container = document.getElementById('root')
@@ -11,6 +11,6 @@ if (!container) {
 
 createRoot(container).render(
   <StrictMode>
-    <HomePageBAP />
+    <App />
   </StrictMode>,
 )

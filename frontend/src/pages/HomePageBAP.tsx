@@ -5,13 +5,20 @@ const FACEBOOK_URL = "https://www.facebook.com/profile.php?id=100057361731802";
 const ASSETS = "https://bapweb.netlify.app/assets";
 
 const navLinks = [
-  { href: "#inicio", label: "Inicio" },
-  { href: "#empresa", label: "Empresa" },
-  { href: "#servicios", label: "Servicios" },
-  { href: "#reconocimientos", label: "Reconocimientos" },
-  { href: "#clientes", label: "Clientes" },
-  { href: "#contacto", label: "Contacto" },
+  { id: "inicio", label: "Inicio" },
+  { id: "empresa", label: "Empresa" },
+  { id: "servicios", label: "Servicios" },
+  { id: "reconocimientos", label: "Reconocimientos" },
+  { id: "clientes", label: "Clientes" },
+  { id: "contacto", label: "Contacto" },
 ];
+
+function scrollToSection(id: string): void {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const top = el.getBoundingClientRect().top + window.scrollY - 74;
+  window.scrollTo({ top, behavior: "smooth" });
+}
 
 const beneficios = [
   {
@@ -176,34 +183,48 @@ function Navbar() {
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <a href="#inicio" className="flex items-center gap-3">
+        <button
+          type="button"
+          onClick={() => scrollToSection("inicio")}
+          className="flex items-center gap-3"
+        >
           <img
             src={`${ASSETS}/logo.jpg`}
             alt="BAP SRL"
             className="h-10 w-auto rounded-md transition-transform duration-300 hover:scale-105"
           />
-        </a>
+        </button>
 
         <ul className="hidden items-center gap-7 lg:flex">
           {navLinks.map((l) => (
-            <li key={l.href}>
-              <a
-                href={l.href}
+            <li key={l.id}>
+              <button
+                type="button"
+                onClick={() => scrollToSection(l.id)}
                 className="relative text-sm text-slate-300 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-px after:w-0 after:bg-emerald-400 after:transition-all after:duration-300 hover:after:w-full"
               >
                 {l.label}
-              </a>
+              </button>
             </li>
           ))}
         </ul>
 
         <div className="flex items-center gap-3">
-          <a
-            href="#contacto"
+          <span className="hidden lg:inline-block">
+            <a
+              href="#/"
+              className="text-sm font-semibold text-emerald-400 transition-colors hover:text-emerald-300"
+            >
+              Iniciar sesión
+            </a>
+          </span>
+          <button
+            type="button"
+            onClick={() => scrollToSection("contacto")}
             className="hidden rounded-full bg-emerald-400 px-5 py-2 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-emerald-300 sm:inline-block"
           >
             Solicitar demostración
-          </a>
+          </button>
           <button
             type="button"
             onClick={() => setMenuOpen((o) => !o)}
@@ -224,16 +245,27 @@ function Navbar() {
       >
         <ul className="space-y-1 px-6 pb-4">
           {navLinks.map((l) => (
-            <li key={l.href}>
-              <a
-                href={l.href}
-                onClick={() => setMenuOpen(false)}
-                className="block rounded-lg px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white"
+            <li key={l.id}>
+              <button
+                type="button"
+                onClick={() => {
+                  setMenuOpen(false);
+                  scrollToSection(l.id);
+                }}
+                className="block w-full rounded-lg px-3 py-2 text-left text-slate-300 hover:bg-white/5 hover:text-white"
               >
                 {l.label}
-              </a>
+              </button>
             </li>
           ))}
+          <li>
+            <a
+              href="#/"
+              className="block rounded-lg px-3 py-2 text-sm font-semibold text-emerald-400 hover:bg-white/5 hover:text-emerald-300"
+            >
+              Iniciar sesión
+            </a>
+          </li>
         </ul>
       </div>
     </header>
@@ -287,12 +319,13 @@ function Hero() {
             className="mt-10 flex animate-fade-in-up flex-wrap gap-4"
             style={{ animationDelay: "400ms" }}
           >
-            <a
-              href="#contacto"
+            <button
+              type="button"
+              onClick={() => scrollToSection("contacto")}
               className="rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400 px-7 py-3 font-semibold text-slate-950 shadow-xl shadow-emerald-500/25 transition-all duration-300 hover:-translate-y-1 hover:shadow-emerald-400/40"
             >
               Solicitar demostración
-            </a>
+            </button>
             <a
               href={WHATSAPP_URL}
               target="_blank"

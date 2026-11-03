@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useCallback, type ReactNode } from 'react'
-import type { AuthState, LoginCredentials, User } from '@/types'
-import usersData from '@/data/users.json'
+import type { AuthState, LoginCredentials, User } from '../types'
+import usersData from '../data/users.json'
 
 interface AuthContextType extends AuthState {
   login: (credentials: LoginCredentials) => boolean

@@ -1,23 +1,22 @@
 [
   {
     "id": 1,
-    "name": "Admin FoodApp",
-    "email": "admin@foodapp.com",
+    "name": "Admin BAP",
+    "email": "admin@bapsrl.com",
     "password": "admin123",
-    "role": "admin"
+    "role": "admin",
+    "position": "Administrador General",
+    "department": "Administración",
+    "memberSince": "2021"
   },
   {
     "id": 2,
-    "name": "María García",
-    "email": "maria@foodapp.com",
-    "password": "user123",
-    "role": "usuario"
-  },
-  {
-    "id": 3,
-    "name": "Test User",
-    "email": "test@foodapp.com",
-    "password": "test123",
-    "role": "usuario"
+    "name": "Ana Suárez",
+    "email": "usuario@bapsrl.com",
+    "password": "usuario123",
+    "role": "contador",
+    "position": "Analista Contable",
+    "department": "Contabilidad",
+    "memberSince": "2023"
   }
 ]

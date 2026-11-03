@@ -1,8 +1,47 @@
 @import 'tailwindcss';
 @import 'tailwind-animations';
 
+/* Rubik (variable) — identidad tipográfica del proyecto */
+@font-face {
+  font-family: 'Rubik';
+  src: url('../font/Rubik/Rubik-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
+  --font-sans: 'Rubik', ui-sans-serif, system-ui, sans-serif;
+
+  /* Azul marino corporativo */
+  --color-navy-50: #f0f4fa;
+  --color-navy-100: #dce6f2;
+  --color-navy-200: #b9cde6;
+  --color-navy-300: #8cabd2;
+  --color-navy-400: #5e88b8;
+  --color-navy-500: #3e6a9e;
+  --color-navy-600: #2d567f;
+  --color-navy-700: #1f4465;
+  --color-navy-800: #142f48;
+  --color-navy-900: #0d1f33;
+  --color-navy-950: #07121f;
+
+  /* Amarillo piña de acento */
+  --color-pineapple-50: #fff9e6;
+  --color-pineapple-100: #fff0c2;
+  --color-pineapple-200: #ffe388;
+  --color-pineapple-300: #ffd54d;
+  --color-pineapple-400: #ffcb1f;
+  --color-pineapple-500: #ffc400;
+  --color-pineapple-600: #e0a800;
+  --color-pineapple-700: #b58500;
+  --color-pineapple-800: #8c6500;
+  --color-pineapple-900: #66490a;
+
   --animate-gradient-x: gradient-x 6s ease infinite;
+
+  /* Ondulación sutil de fondo (detalles decorativos del panel) */
+  --animate-float-slow: float 6s ease-in-out infinite;
 }
 
 @keyframes gradient-x {
