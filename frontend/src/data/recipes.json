@@ -1,0 +1,194 @@
+[
+  {
+    "id": 1,
+    "name": "Pizza Margherita",
+    "category": "Italiana",
+    "time": "30 min",
+    "difficulty": "Fácil",
+    "servings": 4,
+    "rating": 4.8,
+    "description": "La clásica pizza napolitana con salsa de tomate, mozzarella fresca y albahaca fresca.",
+    "ingredients": [
+      { "amount": "500g", "name": "Harina de trigo" },
+      { "amount": "320ml", "name": "Agua tibia" },
+      { "amount": "7g", "name": "Levadura seca" },
+      { "amount": "1 cda", "name": "Aceite de oliva" },
+      { "amount": "1 cdta", "name": "Sal" },
+      { "amount": "200g", "name": "Salsa de tomate" },
+      { "amount": "250g", "name": "Mozzarella fresca" },
+      { "amount": "10 hojas", "name": "Albahaca fresca" },
+      { "amount": "al gusto", "name": "Aceite de oliva extra virgen" }
+    ],
+    "steps": [
+      { "step": 1, "instruction": "Mezclar la harina con la levadura y la sal en un bowl grande." },
+      { "step": 2, "instruction": "Agregar el agua tibia y el aceite de oliva. Amasar durante 10 minutos hasta obtener una masa suave y elástica." },
+      { "step": 3, "instruction": "Cubrir con un paño húmedo y dejar reposar 1 hora hasta que duplique su tamaño." },
+      { "step": 4, "instruction": "Precalentar el horno a 250°C (480°F) con la piedra o bandeja dentro." },
+      { "step": 5, "instruction": "Estirar la masa en una superficie enharinada hasta formar un círculo de 30cm." },
+      { "step": 6, "instruction": "Untar la salsa de tomate dejando un borde de 2cm." },
+      { "step": 7, "instruction": "Coloque la mozzarella en rodajas sobre la salsa." },
+      { "step": 8, "instruction": "Hornear durante 10-12 minutos hasta que los bordes estén dorados." },
+      { "step": 9, "instruction": "Retirar del horno, agregar hojas de albahaca y un chorrito de aceite de oliva. Servir inmediatamente." }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Sushi Roll",
+    "category": "Japonesa",
+    "time": "45 min",
+    "difficulty": "Media",
+    "servings": 2,
+    "rating": 4.9,
+    "description": "Rolls de sushi rellenos de pescado fresco, aguacate y pepino con arroz seasoning.",
+    "ingredients": [
+      { "amount": "2 tazas", "name": "Arroz para sushi" },
+      { "amount": "2 1/4 tazas", "name": "Agua" },
+      { "amount": "3 cdas", "name": "Vinagre de arroz" },
+      { "amount": "1 cda", "name": "Azúcar" },
+      { "amount": "1 cdta", "name": "Sal" },
+      { "amount": "4 hojas", "name": "Nori (alga)" },
+      { "amount": "200g", "name": "Salmón fresco" },
+      { "amount": "1", "name": "Aguacate maduro" },
+      { "amount": "1/2", "name": "Pepino" },
+      { "amount": "al gusto", "name": "Salsa de soya" },
+      { "amount": "al gusto", "name": "Wasabi" },
+      { "amount": "al gusto", "name": "Jengibre encurtido" }
+    ],
+    "steps": [
+      { "step": 1, "instruction": "Lavar el arroz hasta que el agua salga clara. Cocinar con el agua en una olla." },
+      { "step": 2, "instruction": "Mezclar el vinagre, azúcar y sal. Calentar hasta disolver. Mezclar con el arroz cocido y dejar enfriar." },
+      { "step": 3, "instruction": "Cortar el salmón en tiras largas, el aguacate en rodajas y el pepino en bastones." },
+      { "step": 4, "instruction": "Colocar una hoja de nori sobre la esterilla de bambú. Extender el arroz uniformemente." },
+      { "step": 5, "instruction": "Voltear la hoja para que el arroz quede hacia abajo. Colocar el relleno en el centro." },
+      { "step": 6, "instruction": "Enrollar firmemente usando la esterilla, presionando suavemente para compactar." },
+      { "step": 7, "instruction": "Cortar cada roll en 8 piezas con un cuchillo húmedo." },
+      { "step": 8, "instruction": "Servir con salsa de soya, wasabi y jengibre encurtido." }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Tacos al Pastor",
+    "category": "Mexicana",
+    "time": "25 min",
+    "difficulty": "Media",
+    "servings": 4,
+    "rating": 4.7,
+    "description": "Tacos tradicionales mexicanos con cerdo adobado, piña, cilantro y cebolla.",
+    "ingredients": [
+      { "amount": "500g", "name": "Carne de cerdo (pierna)" },
+      { "amount": "3 cdas", "name": "Achiote en pasta" },
+      { "amount": "1/2 taza", "name": "Jugo de naranja" },
+      { "amount": "2 cdas", "name": "Vinagre blanco" },
+      { "amount": "3 dientes", "name": "Ajo molido" },
+      { "amount": "1 cdta", "name": "Comino" },
+      { "amount": "1/2", "name": "Piña en rodajas" },
+      { "amount": "12", "name": "Tortillas de maíz" },
+      { "amount": "1", "name": "Cebolla blanca picada" },
+      { "amount": "1/2 taza", "name": "Cilantro fresco picado" },
+      { "amount": "al gusto", "name": "Limones" },
+      { "amount": "al gusto", "name": "Salsa verde o roja" }
+    ],
+    "steps": [
+      { "step": 1, "instruction": "Marinar la carne con achiote, jugo de naranja, vinagre, ajo y comino durante al menos 2 horas." },
+      { "step": 2, "instruction": "Cocinar la carne en una sartén caliente a fuego medio-alto, cortándola en trozos pequeños." },
+      { "step": 3, "instruction": "Cortar la piña en cubos pequeños y dorarla brevemente en la misma sartén." },
+      { "step": 4, "instruction": "Calentar las tortillas en un comal o sartén seca." },
+      { "step": 5, "instruction": "Montar los tacos: tortilla, carne, piña, cebolla y cilantro." },
+      { "step": 6, "instruction": "Exprimir limón y agregar salsa al gusto. Servir inmediatamente." }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Pasta Carbonara",
+    "category": "Italiana",
+    "time": "20 min",
+    "difficulty": "Fácil",
+    "servings": 2,
+    "rating": 4.6,
+    "description": "Pasta clásica italiana con huevo, queso parmesano, panceta y pimienta negra.",
+    "ingredients": [
+      { "amount": "200g", "name": "Espaguetis" },
+      { "amount": "150g", "name": "Panceta o guanciale" },
+      { "amount": "3", "name": "Yemas de huevo" },
+      { "amount": "1 huevo entero", "name": "Huevo" },
+      { "amount": "80g", "name": "Queso Parmesano rallado" },
+      { "amount": "al gusto", "name": "Pimienta negra molida" },
+      { "amount": "1 pizca", "name": "Sal" }
+    ],
+    "steps": [
+      { "step": 1, "instruction": "Poner a hervir agua con sal y cocinar los espaguetis al dente." },
+      { "step": 2, "instruction": "Mientras, dorar la panceta en una sartén sin aceite hasta que esté crujiente." },
+      { "step": 3, "instruction": "En un bowl, mezclar las yemas, el huevo entero y el parmesano rallado." },
+      { "step": 4, "instruction": "Reservar 1 taza del agua de cocción de la pasta." },
+      { "step": 5, "instruction": "Escurrir la pasta y agregarla a la sartén con la panceta (fuera del fuego)." },
+      { "step": 6, "instruction": "Verter la mezcla de huevo y queso sobre la pasta caliente, moviendo rápidamente." },
+      { "step": 7, "instruction": "Agregar agua de cocción cucharada a cucharada hasta lograr una cremosidad sedosa." },
+      { "step": 8, "instruction": "Servir con pimienta negra recién molida y más parmesano." }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Ceviche de Camarón",
+    "category": "Peruana",
+    "time": "15 min",
+    "difficulty": "Fácil",
+    "servings": 4,
+    "rating": 4.8,
+    "description": "Ceviche fresco de camarón con lima, cebolla morada, cilantro y ají.",
+    "ingredients": [
+      { "amount": "500g", "name": "Camarones limpios" },
+      { "amount": "1 taza", "name": "Jugo de lima" },
+      { "amount": "1", "name": "Cebolla morada en plumas" },
+      { "amount": "1", "name": "Ají limo cortado" },
+      { "amount": "1/2 taza", "name": "Cilantro fresco picado" },
+      { "amount": "1", "name": "Tomate picado" },
+      { "amount": "1 cdta", "name": "Sal" },
+      { "amount": "1/2 cdta", "name": "Pimienta" },
+      { "amount": "1 taza", "name": "Cancha (maíz tostado)" },
+      { "amount": "1", "name": "Camote dulce cocido" }
+    ],
+    "steps": [
+      { "step": 1, "instruction": "Cortar los camarones en trozos medianos y colocarlos en un bowl de vidrio." },
+      { "step": 2, "instruction": "Cubrir con el jugo de lima y agregar la sal. Mezclar bien." },
+      { "step": 3, "instruction": "Dejar marinar 5-7 minutos en refrigeración hasta que los camarones cambien de color." },
+      { "step": 4, "instruction": "Agregar la cebolla en plumas, el ají, el tomate y el cilantro." },
+      { "step": 5, "instruction": "Mezclar suavemente y ajustar la sazón con sal y pimienta." },
+      { "step": 6, "instruction": "Servir inmediatamente con cancha y rodajas de camote dulce." }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Paella Valenciana",
+    "category": "Española",
+    "time": "50 min",
+    "difficulty": "Difícil",
+    "servings": 6,
+    "rating": 4.9,
+    "description": "Paella tradicional con pollo, conejo, judías verdes, garrofón y azafrán.",
+    "ingredients": [
+      { "amount": "400g", "name": "Arroz bomba" },
+      { "amount": "1 litro", "name": "Caldo de pollo" },
+      { "amount": "300g", "name": "Pollo troceado" },
+      { "amount": "200g", "name": "Conejo troceado" },
+      { "amount": "150g", "name": "Judías verdes" },
+      { "amount": "100g", "name": "Garrofón (judía blanca)" },
+      { "amount": "1 pizca", "name": "Azafrán" },
+      { "amount": "1 cda", "name": "Pimentón dulce" },
+      { "amount": "4 cdas", "name": "Aceite de oliva" },
+      { "amount": "1", "name": "Tomate rallado" },
+      { "amount": "1 diente", "name": "Ajo picado" },
+      { "amount": "al gusto", "name": "Sal y romero" }
+    ],
+    "steps": [
+      { "step": 1, "instruction": "Calentar el aceite en la paellera a fuego medio. Dorar el pollo y el conejo hasta sellar." },
+      { "step": 2, "instruction": "Agregar las judías verdes y el garrofón. Cocinar 3 minutos." },
+      { "step": 3, "instruction": "Hacer un hueco en el centro, agregar el tomate rallado y el ajo. Sofreír 1 minuto." },
+      { "step": 4, "instruction": "Añadir el pimentón dulce, remover rápidamente y agregar el caldo caliente." },
+      { "step": 5, "instruction": "Agregar el azafrán y el romero. Dejar hervir 5 minutos a fuego fuerte." },
+      { "step": 6, "instruction": "Distribuir el arroz uniformemente en la paellera. Cocinar a fuego fuerte 8 minutos." },
+      { "step": 7, "instruction": "Reducir a fuego medio y cocinar 12 minutos más sin remover el arroz." },
+      { "step": 8, "instruction": "Subir el fuego 30 segundos para crear el socarrat (capa crujiente del fondo)." },
+      { "step": 9, "instruction": "Retirar del fuego, cubrir con paño limpio y dejar reposar 5 minutos antes de servir." }
+    ]
+  }
+]

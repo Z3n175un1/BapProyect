@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "Admin FoodApp",
+    "email": "admin@foodapp.com",
+    "password": "admin123",
+    "role": "admin"
+  },
+  {
+    "id": 2,
+    "name": "María García",
+    "email": "maria@foodapp.com",
+    "password": "user123",
+    "role": "usuario"
+  },
+  {
+    "id": 3,
+    "name": "Test User",
+    "email": "test@foodapp.com",
+    "password": "test123",
+    "role": "usuario"
+  }
+]
