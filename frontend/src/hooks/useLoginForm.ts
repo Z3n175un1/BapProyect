@@ -1,5 +1,8 @@
 import { useCallback, useState, type ChangeEvent, type FormEvent } from 'react'
 import { useAuth } from '../context/AuthContext'
+import { ApiError } from '../services/http'
+import * as authApi from '../services/authApi'
+import type { TotpChallengePayload } from '../types/auth'
 import type { LoginFormErrors, LoginFormValues, LoginStatus } from '../types/login'
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -26,12 +29,15 @@ function validate(values: LoginFormValues): LoginFormErrors {
 }
 
 /**
- * Lógica del formulario de autenticación (fase mock).
- * La comprobación la realiza AuthContext; aquí se orquestan estados y
- * validaciones, manteniendo separada la presentación visual.
+ * Flujo real de autenticación contra la API (FASE C):
+ * validar → POST /auth/login → si TOTP está activo queda pendiente
+ * verificarDesafio2FA() → aplicarSesion() en AuthContext.
+ *
+ * El password y los códigos 2FA NO se persisten en ningún storage; solo el
+ * correo queda recordado (last.email) si el usuario lo pide.
  */
 export default function useLoginForm(onSubmitClick: () => void) {
-  const { login } = useAuth()
+  const { aplicarSesion } = useAuth()
   const [values, setValues] = useState<LoginFormValues>(() => {
     const rememberedEmail = window.localStorage.getItem(LAST_EMAIL_KEY)
     return {
@@ -44,6 +50,16 @@ export default function useLoginForm(onSubmitClick: () => void) {
   const [status, setStatus] = useState<LoginStatus>('idle')
   const [submitAttempt, setSubmitAttempt] = useState(0)
   const [showPassword, setShowPassword] = useState(false)
+  /** Desafío TOTP pendiente (solo en memoria; expira en ~5 min en el API). */
+  const [desafioTotp, setDesafioTotp] = useState<TotpChallengePayload | null>(null)
+  const [mensajeServidor, setMensajeServidor] = useState<string | undefined>()
+  const [verificando2fa, setVerificando2fa] = useState(false)
+
+  const marcarError = useCallback((mensaje: string) => {
+    setMensajeServidor(mensaje)
+    setStatus('error')
+    setSubmitAttempt((attempt) => attempt + 1)
+  }, [])
 
   const updateField =
     (field: 'email' | 'password') =>
@@ -74,9 +90,19 @@ export default function useLoginForm(onSubmitClick: () => void) {
     setValues((current) => ({ ...current, rememberMe: checked }))
   }, [])
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const recordarCorreo = () => {
+    const correo = values.email.trim().toLowerCase()
+    if (values.rememberMe) {
+      window.localStorage.setItem(LAST_EMAIL_KEY, correo)
+    } else {
+      window.localStorage.removeItem(LAST_EMAIL_KEY)
+    }
+  }
+
+  /** Paso 1: credenciales (correo + contraseña). */
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (status === 'loading' || status === 'success') return
+    if (status === 'loading' || status === 'success' || verificando2fa) return
 
     const validationErrors = validate(values)
     setErrors(validationErrors)
@@ -87,25 +113,67 @@ export default function useLoginForm(onSubmitClick: () => void) {
 
     onSubmitClick()
     setStatus('loading')
+    setMensajeServidor(undefined)
 
-    // Simulación de latencia de red (fase mock). Más adelante se sustituye
-    // por una llamada real a la API sin tocar la presentación.
-    window.setTimeout(() => {
-      const email = values.email.trim().toLowerCase()
-      const success = login({ email, password: values.password })
-      if (success) {
-        if (values.rememberMe) {
-          window.localStorage.setItem(LAST_EMAIL_KEY, email)
-        } else {
-          window.localStorage.removeItem(LAST_EMAIL_KEY)
-        }
-        setStatus('success')
-      } else {
-        setStatus('error')
-        setSubmitAttempt((attempt) => attempt + 1)
+    try {
+      const resultado = await authApi.iniciarSesion(
+        values.email.trim().toLowerCase(),
+        values.password,
+      )
+
+      if (resultado.status === 'TOTP_REQUERIDO') {
+        setDesafioTotp(resultado)
+        setStatus('totp')
+        return
       }
-    }, 900)
+
+      recordarCorreo()
+      aplicarSesion(resultado)
+      setStatus('success')
+    } catch (error) {
+      marcarError(
+        error instanceof ApiError
+          ? error.message
+          : 'No se pudo procesar la solicitud. Intenta de nuevo.',
+      )
+    }
   }
+
+  /** Paso 2 (solo si TOTP está activo): verificar el código de 6 dígitos. */
+  const verificarDesafio2FA = async (codigo: string) => {
+    if (!desafioTotp || status !== 'totp' || verificando2fa) return
+
+    setVerificando2fa(true)
+    setMensajeServidor(undefined)
+
+    try {
+      const payload = await authApi.verificar2FA(desafioTotp.desafio, codigo)
+      recordarCorreo()
+      setDesafioTotp(null)
+      aplicarSesion(payload)
+      setStatus('success')
+    } catch (error) {
+      marcarError(
+        error instanceof ApiError
+          ? error.message
+          : 'No se pudo verificar el código. Intenta de nuevo.',
+      )
+      if (error instanceof ApiError && error.status === 401) {
+        /* El desafío expiró o fue consumido: volver al paso de credenciales. */
+        setDesafioTotp(null)
+        setStatus('idle')
+      }
+    } finally {
+      setVerificando2fa(false)
+    }
+  }
+
+  /** Volver del paso TOTP a credenciales (descarta el desafío en memoria). */
+  const cancelarTotp = useCallback(() => {
+    setDesafioTotp(null)
+    setMensajeServidor(undefined)
+    setStatus('idle')
+  }, [])
 
   return {
     values,
@@ -113,10 +181,15 @@ export default function useLoginForm(onSubmitClick: () => void) {
     status,
     showPassword,
     submitAttempt,
+    mensajeServidor,
+    desafioTotp,
+    verificando2fa,
     updateField,
     handleBlur,
     handleSubmit,
     toggleShowPassword,
     updateRememberMe,
+    verificarDesafio2FA,
+    cancelarTotp,
   }
 }

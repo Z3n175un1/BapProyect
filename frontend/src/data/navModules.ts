@@ -1,13 +1,19 @@
-import type { ModuleLink, ModuleSlug, UserRole } from '../types/dashboard'
+import type { ModuleLink, ModuleSlug } from '../types/dashboard'
 
-/** Módulos del sistema contable, con roles, secciones y estado de implementación. */
+/**
+ * Catálogo de METADATOS de presentación (etiquetas, iconos, descripciones).
+ *
+ * NOTA FASE D/E: este catálogo NO decide permisos. Los módulos visibles
+ * provienen EXCLUSIVAMENTE de AuthContext (modulos[] del backend, calculados
+ * con la regla A06: veto individual > habilitación individual > rol).
+ * El backend revalida el acceso en cada solicitud; ocultar aquí no protege.
+ */
 export const navModules: ModuleLink[] = [
   {
     slug: 'dashboard',
     label: 'Inicio',
     description: 'Vista general con indicadores, gráficos y accesos rápidos del sistema.',
     icon: 'home',
-    roles: ['admin', 'contador'],
     section: 'General',
     status: 'Activo',
     features: [],
@@ -17,7 +23,6 @@ export const navModules: ModuleLink[] = [
     label: 'Usuarios activos',
     description: 'Usuarios registrados, estado de cuenta e indicadores de actividad.',
     icon: 'users',
-    roles: ['admin'],
     section: 'General',
     status: 'Activo',
     features: [
@@ -32,7 +37,6 @@ export const navModules: ModuleLink[] = [
     label: 'Ganancias del día',
     description: 'Resumen de ingresos, egresos y ganancia neta con indicadores visuales.',
     icon: 'wallet',
-    roles: ['admin', 'contador'],
     section: 'General',
     status: 'Activo',
     features: [
@@ -47,7 +51,6 @@ export const navModules: ModuleLink[] = [
     label: 'Contabilidad',
     description: 'Plan de cuentas, asientos, libros, estados financieros y conciliación bancaria.',
     icon: 'book',
-    roles: ['contador'],
     section: 'General',
     status: 'Activo',
     features: [
@@ -61,29 +64,28 @@ export const navModules: ModuleLink[] = [
   {
     slug: 'modulos-habilitados',
     label: 'Módulos habilitados',
-    description: 'Módulos disponibles y permisos de acceso por cuenta de usuario.',
+    description: 'Habilitación y deshabilitación de módulos por usuario, con bitácora de cambios.',
     icon: 'lock',
-    roles: ['admin'],
     section: 'Sistema',
-    status: 'En desarrollo',
+    status: 'Activo',
     features: [
-      { label: 'Visualizar los módulos disponibles para cada usuario', status: 'En desarrollo' },
-      { label: 'Consultar los módulos habilitados de cada cuenta', status: 'En desarrollo' },
-      { label: 'Estructura para gestionar permisos y accesos', status: 'En desarrollo' },
+      { label: 'Visualizar los módulos disponibles para cada usuario', status: 'Activo' },
+      { label: 'Habilitar y deshabilitar módulos por cuenta', status: 'Activo' },
+      { label: 'Consultar el historial de cambios (bitácora)', status: 'Activo' },
     ],
   },
   {
     slug: 'respaldos',
     label: 'Respaldos',
-    description: 'Fechas y estados de respaldos del sistema y futura gestión de backups.',
+    description: 'Historial con fechas, tamaños y estados de los respaldos del sistema.',
     icon: 'database',
-    roles: ['admin'],
     section: 'Sistema',
-    status: 'En desarrollo',
+    status: 'Activo',
     features: [
-      { label: 'Información sobre respaldos del sistema', status: 'En desarrollo' },
-      { label: 'Fechas y estados de los respaldos', status: 'En desarrollo' },
-      { label: 'Interfaz para futuras operaciones de backup', status: 'En desarrollo' },
+      { label: 'Historial con fechas y estados de respaldos', status: 'Activo' },
+      { label: 'Tamaños y estado por respaldo (exitoso/fallido/en progreso)', status: 'Activo' },
+      { label: 'KPIs: último respaldo y resumen por estado', status: 'Activo' },
+      { label: 'Búsqueda por nombre o descripción', status: 'Activo' },
     ],
   },
   {
@@ -91,7 +93,6 @@ export const navModules: ModuleLink[] = [
     label: 'Finanzas',
     description: 'Libro mayor, cuentas por cobrar/pagar, efectivo y activos fijos.',
     icon: 'chart-pie',
-    roles: ['contador'],
     section: 'Finanzas',
     status: 'En desarrollo',
     features: [
@@ -106,7 +107,6 @@ export const navModules: ModuleLink[] = [
     label: 'Estadísticas',
     description: 'Indicadores y gráficos de utilización del sistema.',
     icon: 'bar-chart',
-    roles: ['admin', 'contador'],
     section: 'Sistema',
     status: 'En desarrollo',
     features: [
@@ -122,7 +122,6 @@ export const navModules: ModuleLink[] = [
     label: 'Asistente',
     description: 'Espacio del asistente inteligente para consultas contables.',
     icon: 'bot',
-    roles: ['admin', 'contador'],
     section: 'Sistema',
     status: 'En desarrollo',
     features: [
@@ -136,7 +135,6 @@ export const navModules: ModuleLink[] = [
     label: 'Reportes',
     description: 'Reportes administrativos, contables y fiscales del sistema.',
     icon: 'file-text',
-    roles: ['admin', 'contador'],
     section: 'Sistema',
     status: 'En desarrollo',
     features: [
@@ -156,25 +154,29 @@ export function isModuleRoute(route: string): route is ModuleSlug {
   return navModules.some((m) => m.slug === route)
 }
 
-/** ¿El rol puede abrir este módulo? (accesos rápidos y guards de ruta) */
-export function quickAccessAllowed(slug: ModuleSlug, role: UserRole): boolean {
-  const module = findModule(slug)
-  return Boolean(module && module.roles.includes(role))
+/** Módulos visibles: Inicio (siempre) + los EFFECTIVOS emitidos por el backend. */
+export function modulesFor(modulosAutorizados: string[]): ModuleLink[] {
+  const autorizados = new Set(modulosAutorizados)
+  return navModules.filter(
+    (m) => m.slug === 'dashboard' || autorizados.has(m.slug),
+  )
 }
 
-export function modulesForRole(role: UserRole): ModuleLink[] {
-  return navModules.filter((m) => m.roles.includes(role))
-}
-
-/** Agrupa los módulos del rol por sección, respetando el orden de definición. */
-export function moduleSectionsForRole(
-  role: UserRole,
+/** Agrupa los módulos visibles por sección, respetando el orden del catálogo. */
+export function moduleSectionsFor(
+  modulosAutorizados: string[],
 ): Array<{ section: string; modules: ModuleLink[] }> {
   const sections: Array<{ section: string; modules: ModuleLink[] }> = []
-  for (const module of modulesForRole(role)) {
+  for (const module of modulesFor(modulosAutorizados)) {
     const group = sections.find((s) => s.section === module.section)
     if (group) group.modules.push(module)
     else sections.push({ section: module.section, modules: [module] })
   }
   return sections
+}
+
+/* Accesos rápidos: permitir sólo slugs efectivos (incluye dashboard). */
+export function quickAccessAllowed(slug: ModuleSlug, modulosAutorizados: string[]): boolean {
+  if (slug === 'dashboard') return true
+  return modulosAutorizados.includes(slug)
 }

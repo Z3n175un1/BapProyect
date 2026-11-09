@@ -6,14 +6,15 @@ import SalesDistribution from '../components/dashboard/SalesDistribution'
 import PerformanceChart from '../components/dashboard/PerformanceChart'
 import ActivityFeed from '../components/dashboard/ActivityFeed'
 import QuickActions from '../components/dashboard/QuickActions'
-import UserPanel from '../components/dashboard/UserPanel'
 import UsersModule from '../components/modules/UsersModule'
 import DailyEarningsModule from '../components/modules/DailyEarningsModule'
 import AccountingModule from '../components/modules/AccountingModule'
+import ModulosHabilitadosModule from '../components/modules/ModulosHabilitadosModule'
+import RespaldosModule from '../components/modules/RespaldosModule'
 import { kpiMetrics } from '../data/kpiMetrics'
-import { isModuleRoute, findModule, quickAccessAllowed } from '../data/navModules'
+import { quickAccessAllowed, findModule, isModuleRoute } from '../data/navModules'
 import { quickActions } from '../data/quickActions'
-import type { ModuleSlug } from '../types/dashboard'
+import type { ModuleLink, ModuleSlug } from '../types/dashboard'
 import { useAuth } from '../context/AuthContext'
 
 type DashboardPageProps = {
@@ -21,34 +22,43 @@ type DashboardPageProps = {
 }
 
 export default function DashboardPage({ activeSlug }: DashboardPageProps) {
-  const normalized: ModuleSlug = isModuleRoute(activeSlug) ? activeSlug : 'dashboard'
+  const { modulos } = useAuth()
+
+  /* Módulos clásicos del catálogo o rutas extras habilitadas por el backend. */
+  const activo: ModuleSlug = isModuleRoute(activeSlug)
+    ? activeSlug
+    : modulos.includes(activeSlug)
+      ? (activeSlug as ModuleSlug)
+      : 'dashboard'
 
   return (
-    <DashboardLayout activeSlug={normalized}>
-      {normalized === 'dashboard' ? <DashboardView /> : <ModuleRoute slug={normalized} />}
+    <DashboardLayout activeSlug={activo}>
+      {activo === 'dashboard' ? <DashboardView /> : <ModuleRoute slug={activo} />}
     </DashboardLayout>
   )
 }
 
+/** Guard de ruta REAL por módulos de la sesión (el backend revalida después). */
 function ModuleRoute({ slug }: { slug: ModuleSlug }) {
-  const module = findModule(slug)
-  const { user } = useAuth()
-  const role = user?.role ?? 'contador'
+  const module: ModuleLink | undefined = findModule(slug)
+  const { modulos } = useAuth()
 
   if (!module || module.slug === 'dashboard') return null
 
-  if (!module.roles.includes(role)) return <RestrictedModule module={module} role={role} />
+  /* Ocultar por frontend NO es seguridad: cada API lo vuelve a validar. */
+  if (!quickAccessAllowed(slug, modulos)) return <RestrictedModule module={module} />
 
   if (module.slug === 'usuarios-activos') return <UsersModule />
   if (module.slug === 'ganancias-del-dia') return <DailyEarningsModule module={module} />
   if (module.slug === 'contabilidad') return <AccountingModule module={module} />
+  if (module.slug === 'modulos-habilitados') return <ModulosHabilitadosModule module={module} />
+  if (module.slug === 'respaldos') return <RespaldosModule module={module} />
 
   return <ModulePlaceholder module={module} />
 }
 
 function DashboardView() {
-  const { user } = useAuth()
-  const role = user?.role ?? 'contador'
+  const { user, modulos } = useAuth()
   const now = new Date()
   const today = now.toLocaleDateString('es-BO', {
     weekday: 'long',
@@ -106,8 +116,7 @@ function DashboardView() {
         </div>
 
         <aside className="min-w-0 space-y-6" aria-label="Panel complementario">
-          <UserPanel />
-          <QuickActions actions={quickActions.filter((action) => quickAccessAllowed(action.slug, role))} />
+          <QuickActions actions={quickActions.filter((action) => quickAccessAllowed(action.slug, modulos))} />
           <MiniAlerts />
         </aside>
       </div>

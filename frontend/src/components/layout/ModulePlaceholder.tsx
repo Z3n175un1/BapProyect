@@ -1,7 +1,6 @@
 import Icon from '../ui/Icon'
-import type { ModuleLink, UserRole } from '../../types/dashboard'
+import type { ModuleLink } from '../../types/dashboard'
 import { HOME_ROUTE } from '../../utils/routes'
-import { roleLabel } from '../../utils/format'
 
 type ModulePlaceholderProps = {
   module: ModuleLink
@@ -70,8 +69,8 @@ export default function ModulePlaceholder({ module }: ModulePlaceholderProps) {
   )
 }
 
-/** Pantalla cuando el perfil autenticado no puede abrir el módulo. */
-export function RestrictedModule({ module, role }: { module: ModuleLink; role: UserRole }) {
+/** Pantalla cuando el módulo no está habilitado para la sesión (A06). */
+export function RestrictedModule({ module }: { module: ModuleLink }) {
   return (
     <section className="animate-blurred-fade-in flex min-h-[60vh] flex-col items-center justify-center rounded-2xl border border-dashed border-red-200 bg-white p-10 text-center">
       <span className="flex h-20 w-20 items-center justify-center rounded-2xl bg-red-50 text-red-400 ring-1 ring-red-200">
@@ -80,7 +79,8 @@ export function RestrictedModule({ module, role }: { module: ModuleLink; role: U
       <h1 className="mt-6 text-2xl font-bold tracking-tight text-navy-900">Acceso restringido</h1>
       <p className="mt-2 max-w-md text-sm leading-relaxed text-navy-600">
         El módulo <strong className="text-navy-800">{module.label}</strong> no está habilitado
-        para el perfil de {roleLabel(role)}.
+        para tu cuenta. Solicítalo al administrador de tu empresa; la autorización
+        se valida en el servidor.
       </p>
       <span className="mt-5 inline-flex items-center gap-2 rounded-full bg-red-50 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-red-600 ring-1 ring-red-200">
         <Icon name="lock" className="h-3.5 w-3.5" />

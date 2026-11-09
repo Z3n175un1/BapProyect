@@ -1,5 +1,5 @@
 import Icon from '../ui/Icon'
-import { moduleSectionsForRole } from '../../data/navModules'
+import { moduleSectionsFor } from '../../data/navModules'
 import { useAuth } from '../../context/AuthContext'
 import { HOME_ROUTE, LANDING_ROUTE } from '../../utils/routes'
 import { initialsOf, roleLabel } from '../../utils/format'
@@ -21,9 +21,9 @@ export default function Sidebar({
   onToggleCollapse,
   onCloseMobile,
 }: SidebarProps) {
-  const { user, logout } = useAuth()
-  const role: 'admin' | 'contador' = user?.role ?? 'contador'
-  const sections = moduleSectionsForRole(role)
+  const { user, modulos, logout } = useAuth()
+  /* Módulos efectivos de la sesión (A06 desde el backend; fuentes reales). */
+  const sections = moduleSectionsFor(modulos)
 
   const handleLogout = () => {
     logout()

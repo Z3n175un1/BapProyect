@@ -1,7 +1,7 @@
 import { useState, useMemo, type FormEvent } from 'react'
 import Icon from '../ui/Icon'
 import { notificationItems } from '../../data/notifications'
-import { modulesForRole } from '../../data/navModules'
+import { modulesFor } from '../../data/navModules'
 import { useAuth } from '../../context/AuthContext'
 import type { NotificationItem } from '../../types/dashboard'
 import { HOME_ROUTE, LOGIN_ROUTE, LANDING_ROUTE } from '../../utils/routes'
@@ -60,8 +60,9 @@ export default function Topbar({ onMenuClick }: TopbarProps) {
 function SearchBar() {
   const [query, setQuery] = useState('')
   const [open, setOpen] = useState(false)
-  const { user } = useAuth()
-  const allowed = modulesForRole(user?.role ?? 'contador')
+  const { modulos } = useAuth()
+  /* Búsqueda limitada a los módulos efectivos emitidos por el backend. */
+  const allowed = modulesFor(modulos)
 
   const results = useMemo(() => {
     const normalized = query.trim().toLowerCase()

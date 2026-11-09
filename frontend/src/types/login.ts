@@ -7,4 +7,4 @@ export type LoginFormErrors = {
   password?: string
 }
 
-export type LoginStatus = 'idle' | 'loading' | 'error' | 'success'
+export type LoginStatus = 'idle' | 'loading' | 'error' | 'success' | 'totp'

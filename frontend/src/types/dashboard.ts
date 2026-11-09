@@ -26,7 +26,6 @@ export interface ModuleLink {
   label: string
   description: string
   icon: IconName
-  roles: UserRole[]
   section: 'General' | 'Gestión' | 'Sistema' | 'Finanzas'
   status: ModuleStatus
   features: ModuleFeature[]
